@@ -64,10 +64,10 @@ const images = [
     },
 ];
     
-const galleryContainer = document.querySelector(".gallery");
-galleryContainer.addEventListener("click", function(event) {
-    event.preventDefault();
-})    
+// const galleryContainer = document.querySelector(".gallery");
+// galleryContainer.addEventListener("click", function(event) {
+//     event.preventDefault();
+// })    
 
 
 // images.forEach(image => {
@@ -86,37 +86,69 @@ galleryContainer.addEventListener("click", function(event) {
 // galleryContainer.appendChild(listItem);
 // })
 
-galleryContainer.addEventListener("click", function (event) {
-console.log(event.target);
-})
+// galleryContainer.addEventListener("click", function (event) {
+// console.log(event.target);
+// })
 
-document.addEventListener('DOMContentLoaded', function () {
+// document.addEventListener('DOMContentLoaded', function () {
     // Ваш код для галереї
-    images.forEach(image => {
-        const listItem = document.createElement("li");
-        listItem.classList.add("gallery-item");
-        listItem.innerHTML =
-        `<a class="gallery-link" href="${image.original}" download="">
-        <img
-            class="gallery-image"
-            src="${image.preview}"
-            data-source="${image.original}"
-            alt="${image.description}"
-        />
-        </a>`;
+//     images.forEach(image => {
+//         const listItem = document.createElement("li");
+//         listItem.classList.add("gallery-item");
+//         listItem.innerHTML =
+//         `<a class="gallery-link" href="${image.original}" download="">
+//         <img
+//             class="gallery-image"
+//             src="${image.preview}"
+//             data-source="${image.original}"
+//             alt="${image.description}"
+//         />
+//         </a>`;
         
-    galleryContainer.appendChild(listItem);
-    })
+//     galleryContainer.appendChild(listItem);
+//     })
 
     // При кліку на зображення
-    document.querySelectorAll('.thumbnail').forEach(function (element) {
-    element.addEventListener('click', function () {
-        // Отримуємо посилання на зображення
-        const imgSrc = this.querySelector('img').getAttribute('src');
-        // Ініціалізуємо модальне вікно зображення
-        const lightbox = basicLightbox.create(`<img src="${image.original}" alt="${image.description}">`);
-        // Відображаємо модальне вікно
-        lightbox.show();
-    });
-    });
+//     document.querySelectorAll('.thumbnail').forEach(function (element) {
+//     element.addEventListener('click', function () {
+//         // Отримуємо посилання на зображення
+//         const imgSrc = this.querySelector('img').getAttribute('src');
+//         // Ініціалізуємо модальне вікно зображення
+//         const lightbox = basicLightbox.create(`<img src="${image.original}" alt="${image.description}">`);
+//         // Відображаємо модальне вікно
+//         instance.show();
+//     });
+//     });
+// });
+
+
+const container = document.querySelector(".gallery");
+
+container.insertAdjacentHTML("beforeend", createItem(images));
+container.addEventListener("click", handleClick);
+container.addEventListener("click", event => {
+	event.preventDefault();
 });
+
+function createItem(arr) {
+return arr.map(images =>`
+<li class="gallery-item">
+    <a class="gallery-link" href="${images.original}">
+    <img
+        class="gallery-image"
+        src="${images.preview}"
+        data-source="${images.original}"
+        alt="${images.description}"
+    />
+    </a>
+</li>
+`).join("");
+}
+
+function handleClick(event) {
+if(event.target === event.currentTarget){
+    return;
+}
+const currentImage = event.target;
+console.log(currentImage);
+}
