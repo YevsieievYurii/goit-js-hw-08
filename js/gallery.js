@@ -124,15 +124,33 @@ const images = [
 
 const container = document.querySelector(".gallery");
 
+const instance = basicLightbox.create(`
+<div class="modal">
+    <img src="" alt="Large Image" />
+</div>
+`);
+
 container.insertAdjacentHTML("beforeend", createItem(images));
-container.addEventListener("click", handleClick);
-container.addEventListener("click", event => {
-	event.preventDefault();
+container.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    const clickedElement = event.target.closest(".gallery-item");
+
+    if (clickedElement) {
+        const index = clickedElement.dataset.index;
+        const imageUrl = images[index].original;
+        
+        instance.element().querySelector("img").setAttribute("src", imageUrl);
+
+        instance.show();
+    
+    }
 });
 
+
 function createItem(arr) {
-return arr.map(images =>`
-<li class="gallery-item">
+return arr.map((images, index) =>`
+<li class="gallery-item" data-index="${index}">
     <a class="gallery-link" href="${images.original}">
     <img
         class="gallery-image"
@@ -145,10 +163,3 @@ return arr.map(images =>`
 `).join("");
 }
 
-function handleClick(event) {
-if(event.target === event.currentTarget){
-    return;
-}
-const currentImage = event.target;
-console.log(currentImage);
-}
