@@ -63,63 +63,7 @@ const images = [
     description: 'Lighthouse Coast Sea',
     },
 ];
-    
-// const galleryContainer = document.querySelector(".gallery");
-// galleryContainer.addEventListener("click", function(event) {
-//     event.preventDefault();
-// })    
 
-
-// images.forEach(image => {
-//     const listItem = document.createElement("li");
-//     listItem.classList.add("gallery-item");
-//     listItem.innerHTML =
-//     `<a class="gallery-link" href="${image.original}" download="">
-//     <img
-//         class="gallery-image"
-//         src="${image.preview}"
-//         data-source="${image.original}"
-//         alt="${image.description}"
-//     />
-//     </a>`;
-    
-// galleryContainer.appendChild(listItem);
-// })
-
-// galleryContainer.addEventListener("click", function (event) {
-// console.log(event.target);
-// })
-
-// document.addEventListener('DOMContentLoaded', function () {
-    // Ваш код для галереї
-//     images.forEach(image => {
-//         const listItem = document.createElement("li");
-//         listItem.classList.add("gallery-item");
-//         listItem.innerHTML =
-//         `<a class="gallery-link" href="${image.original}" download="">
-//         <img
-//             class="gallery-image"
-//             src="${image.preview}"
-//             data-source="${image.original}"
-//             alt="${image.description}"
-//         />
-//         </a>`;
-        
-//     galleryContainer.appendChild(listItem);
-//     })
-
-    // При кліку на зображення
-//     document.querySelectorAll('.thumbnail').forEach(function (element) {
-//     element.addEventListener('click', function () {
-//         // Отримуємо посилання на зображення
-//         const imgSrc = this.querySelector('img').getAttribute('src');
-//         // Ініціалізуємо модальне вікно зображення
-//         const lightbox = basicLightbox.create(`<img src="${image.original}" alt="${image.description}">`);
-//         // Відображаємо модальне вікно
-//         instance.show();
-//     });
-//     });
-// });
 
 
 const container = document.querySelector(".gallery");
@@ -137,10 +81,12 @@ container.addEventListener("click", function(event) {
     const clickedElement = event.target.closest(".gallery-item");
 
     if (clickedElement) {
-        const index = clickedElement.dataset.index;
-        const imageUrl = images[index].original;
+        const imageUrl = clickedElement.querySelector(".gallery-image").getAttribute("src");
+        const imageAlt = clickedElement.querySelector(".gallery-image").getAttribute("Alt");
+        const index = images.findIndex(image => image.preview === imageUrl);
         
-        instance.element().querySelector("img").setAttribute("src", imageUrl);
+        instance.element().querySelector("img").setAttribute("src", images[index].original);
+        instance.element().querySelector("img").setAttribute("Alt", imageAlt);
 
         instance.show();
     
@@ -150,7 +96,7 @@ container.addEventListener("click", function(event) {
 
 function createItem(arr) {
 return arr.map((images, index) =>`
-<li class="gallery-item" data-index="${index}">
+<li class="gallery-item">
     <a class="gallery-link" href="${images.original}">
     <img
         class="gallery-image"
