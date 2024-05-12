@@ -67,45 +67,44 @@ const images = [
 
 
 const container = document.querySelector(".gallery");
+container.insertAdjacentHTML("beforeend", createMarkup(images));
+container.addEventListener("click", handleClick);
+
+
+function createMarkup(arr) {
+    return arr
+    .map(
+        (image) =>`
+    <li class="gallery-item">
+        <a class="gallery-link" href="${image.original}">
+        <img
+            class="gallery-image"
+            src="${image.preview}"
+            data-source="${image.original}"
+            alt="${image.description}"
+        />
+        </a>
+    </li>
+    `).join("");
+    }
+
+
+    function handleClick(event) {
+        event.preventDefault();
+        if(event.target === event.currentTarget) {
+            return;
+        }
+    
 
 const instance = basicLightbox.create(`
 <div class="modal">
-    <img src="" alt="Large Image" />
+    <img src="${event.target.dataset.source}" />
 </div>
 `);
 
-container.insertAdjacentHTML("beforeend", createItem(images));
-container.addEventListener("click", function(event) {
-    event.preventDefault();
-
-    const clickedElement = event.target.closest(".gallery-item");
-
-    if (clickedElement) {
-        const imageUrl = clickedElement.querySelector(".gallery-image").getAttribute("src");
-        const imageAlt = clickedElement.querySelector(".gallery-image").getAttribute("Alt");
-        const index = images.findIndex(image => image.preview === imageUrl);
-        
-        instance.element().querySelector("img").setAttribute("src", images[index].original);
-        instance.element().querySelector("img").setAttribute("Alt", imageAlt);
-
-        instance.show();
-    
+instance.show();
     }
-});
 
 
-function createItem(arr) {
-return arr.map((images, index) =>`
-<li class="gallery-item">
-    <a class="gallery-link" href="${images.original}">
-    <img
-        class="gallery-image"
-        src="${images.preview}"
-        data-source="${images.original}"
-        alt="${images.description}"
-    />
-    </a>
-</li>
-`).join("");
-}
+
 
